@@ -1,0 +1,300 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEFENDFACE | Deepfake Detection</title>
+    <link rel="stylesheet" href="\static\style.css">
+    <link rel="preload" href="assets/cyberpunk-font.woff2" as="font" type="font/woff2" crossorigin>
+</head>
+<body>
+    
+     <div class="cyber-grid"></div>
+    
+    <header class="cyber-header">
+        <div class="cyber-logo">
+            <span class="cyber-glitch">DEFEND</span><span class="cyber-flicker">FACE_</span>
+            <div class="cyber-subtitle">DEEPFAKE THREAT NEUTRALIZATION SYSTEM</div>
+        </div>
+        <div class="cyber-nav">
+            <button class="cyber-button active" data-tab="detect">DETECT</button>
+            <button class="cyber-button" data-tab="about">ABOUT</button>
+            <button class="cyber-button" data-tab="contact">CONTACT</button>
+        </div>
+    </header>
+
+    <main class="cyber-main">
+        <!-- Detection Tab -->
+        <div class="cyber-tab" id="detect-tab">
+            <div class="cyber-card">
+                <div class="cyber-card-header">
+                    <span class="cyber-symbol">&#x26A1;</span>
+                    <h2>MEDIA INPUT SELECTOR</h2>
+                    <span class="cyber-symbol">&#x26A1;</span>
+                </div>
+                <div class="input-selector">
+                    <button class="cyber-option active" data-input="upload">
+                        <span class="cyber-symbol">&#x1F4F8;</span> UPLOAD MEDIA
+                    </button>
+                    <button class="cyber-option" data-input="camera">
+                        <span class="cyber-symbol">&#x1F4F9;</span> LIVE CAMERA
+                    </button>
+                </div>
+            </div>
+
+            <div class="cyber-card upload-section" id="upload-section">
+                <div class="cyber-card-header">
+                    <span class="cyber-symbol">&#x1F4BB;</span>
+                    <h2>UPLOAD MEDIA FOR ANALYSIS</h2>
+                    <span class="cyber-symbol">&#x1F4BB;</span>
+                </div>
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-content">
+                        <div class="cyber-symbol large">&#x2913;</div>
+                        <p>DRAG & DROP MEDIA FILES HERE</p>
+                        <p class="cyber-small">OR</p>
+                        <button class="cyber-button cyber-button-alt">BROWSE FILES</button>
+                        <input type="file" id="fileInput" accept="image/*,video/*" multiple style="display: none;">
+                    </div>
+                </div>
+                <div class="file-preview" id="filePreview"></div>
+            </div>
+
+            <div class="cyber-card camera-section" id="camera-section" style="display: none;">
+                <div class="cyber-card-header">
+                    <span class="cyber-symbol">&#x1F4F7;</span>
+                    <h2>LIVE CAMERA ANALYSIS</h2>
+                    <span class="cyber-symbol">&#x1F4F7;</span>
+                </div>
+                <div class="camera-container">
+                    <video id="cameraFeed" autoplay playsinline></video>
+                    <canvas id="cameraCanvas" style="display: none;"></canvas>
+                    <div class="camera-controls">
+                        <button class="cyber-button" id="startCamera">ACTIVATE CAMERA</button>
+                        <button class="cyber-button" id="captureFrame" disabled>CAPTURE FRAME</button>
+                        <button class="cyber-button" id="analyzeLive" disabled>ANALYZE LIVE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cyber-card results-section" id="results-section" style="display: none;">
+                <div class="cyber-card-header">
+                    <span class="cyber-symbol">&#x2695;</span>
+                    <h2>DEEPFAKE ANALYSIS RESULTS</h2>
+                    <span class="cyber-symbol">&#x2695;</span>
+                </div>
+                <div class="results-container">
+                    <div class="result-visual">
+                        <div class="cyber-meter">
+                            <div class="meter-fill" id="meterFill"></div>
+                            <div class="meter-label">AUTHENTICITY SCORE</div>
+                        </div>
+                    </div>
+                    <div class="result-details">
+                        <div class="result-item">
+                            <span class="cyber-symbol">&#x1F50E;</span>
+                            <span class="result-label">DETECTION CONFIDENCE:</span>
+                            <span class="result-value" id="confidenceValue">--%</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="cyber-symbol">&#x23F1;</span>
+                            <span class="result-label">PROCESSING TIME:</span>
+                            <span class="result-value" id="timeValue">--ms</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="cyber-symbol">&#x1F4CA;</span>
+                            <span class="result-label">MODEL USED:</span>
+                            <span class="result-value">LSTM-CNN</span>
+                        </div>
+                        <div class="result-breakdown">
+                            <h3>ANOMALY BREAKDOWN</h3>
+                            <div class="breakdown-item">
+                                <span>Facial Micro-movements:</span>
+                                <progress value="0" max="100" id="micromoveProgress"></progress>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Texture Consistency:</span>
+                                <progress value="0" max="100" id="textureProgress"></progress>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Blink Patterns:</span>
+                                <progress value="0" max="100" id="blinkProgress"></progress>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="cyber-button cyber-button-large" id="analyzeButton" disabled>
+                    <span class="cyber-symbol">&#x2699;</span> ANALYZE MEDIA
+                </button>
+                <button class="cyber-button cyber-button-large" id="resetButton">
+                    <span class="cyber-symbol">&#x21BB;</span> RESET SYSTEM
+                </button>
+            </div>
+        </div>
+
+        <!-- About Tab -->
+        <div class="cyber-tab" id="about-tab" style="display: none;">
+            <div class="cyber-card">
+                <div class="cyber-card-header">
+                    <span class="cyber-symbol">&#x2139;</span>
+                    <h2>ABOUT DEFENDFACE</h2>
+                    <span class="cyber-symbol">&#x2139;</span>
+                </div>
+                <div class="about-content">
+                    <div class="about-section">
+                        <h3><span class="cyber-symbol">&#x269B;</span> SYSTEM OVERVIEW</h3>
+                        <p>DefendFace is an advanced deepfake detection system utilizing a hybrid LSTM-CNN neural network architecture trained on over 2.3 million manipulated and authentic media samples.</p>
+                        <p>Our proprietary algorithm analyzes temporal facial micro-movements, texture inconsistencies, and physiological signals to identify synthetic media with 98.7% accuracy in lab conditions.</p>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3><span class="cyber-symbol">&#x2699;</span> TECHNICAL SPECIFICATIONS</h3>
+                        <div class="spec-grid">
+                            <div class="spec-item">
+                                <div class="spec-label">MODEL ARCHITECTURE</div>
+                                <div class="spec-value">LSTM-CNN Hybrid</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">TRAINING DATA</div>
+                                <div class="spec-value">2.3M Samples</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">ACCURACY</div>
+                                <div class="spec-value">98.7%</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">DETECTION TIME</div>
+                                <div class="spec-value">&lt; 300ms</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3><span class="cyber-symbol">&#x1F4BB;</span> DEVELOPMENT TEAM</h3>
+                        <div class="team-grid">
+                            <div class="team-member">
+                                <div class="member-name">R V LEHANYA</div>
+                                <div class="member-role">FRONT END </div>
+                                <div class="member-bio">CSE STUDENT</div>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-name">SHILPA A P</div>
+                                <div class="member-role">BACKEND</div>
+                                <div class="member-bio">CSE STUDENT </div>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-name">LATHA C R </div>
+                                <div class="member-role">COLLECTED DATA SETS</div>
+                                <div class="member-bio">CSE STUDENT</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Tab -->
+        <div class="cyber-tab" id="contact-tab" style="display: none;">
+            <div class="cyber-card">
+                <div class="cyber-card-header">
+                    <span class="cyber-symbol">&#x260E;</span>
+                    <h2>CONTACT SECURE CHANNEL</h2>
+                    <span class="cyber-symbol">&#x260E;</span>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-methods">
+                        <div class="contact-item">
+                            <span class="cyber-symbol">&#x2709;</span>
+                            <h3>ENCRYPTED MESSAGE</h3>
+                            <form class="cyber-form">
+                                <div class="form-group">
+                                    <label for="contactName">IDENTIFICATION</label>
+                                    <input type="text" id="contactName" class="cyber-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactEmail">SECURE ROUTING</label>
+                                    <input type="email" id="contactEmail" class="cyber-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactMessage">MESSAGE CONTENT</label>
+                                    <textarea id="contactMessage" class="cyber-input" rows="5"></textarea>
+                                </div>
+                                <button type="submit" class="cyber-button">
+                                    <span class="cyber-symbol">&#x1F512;</span> ENCRYPT & SEND
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <span class="cyber-symbol">&#x1F4E2;</span>
+                            <h3>DIRECT CHANNELS</h3>
+                            <div class="direct-contact">
+                                <div class="contact-line">
+                                    <span class="contact-label">SECURE EMAIL:</span>
+                                    <span class="contact-value">rvlehanya@gmail.com</span>
+                                </div>
+                                <div class="contact-line">
+                                    <span class="contact-label">ENCRYPTION KEY:</span>
+                                    <span class="contact-value">9480207347</span>
+                                </div>
+                                <div class="contact-line">
+                                    <span class="contact-label">SIGNAL:</span>
+                                    <span class="contact-value">000-555-555</span>
+                                </div>
+                            </div>
+                            
+                            <div class="social-links">
+                                <button class="cyber-button cyber-button-small">
+                                    <span class="cyber-symbol">&#x1F310;</span> Defend face 
+                                </button>
+                                <button class="cyber-button cyber-button-small">
+                                    <span class="cyber-symbol">&#x1F4AC;</span> 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="disclaimer">
+                        <span class="cyber-symbol">&#x26A0;</span>
+                        <p>All communications are end-to-end encrypted. For maximum security, use our public key when contacting us through third-party channels. Response time is typically 24-48 hours for secure messages.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-grid">
+            <div class="footer-item">
+                <span class="cyber-symbol">&#x1F4E1;</span>
+                <span>DEFENDFACE v2.3.5</span>
+            </div>
+            <div class="footer-item">
+                <span class="cyber-symbol">&#x1F4C5;</span>
+                <span id="current-date">SYSTEM DATE UNAVAILABLE</span>
+            </div>
+            <div class="footer-item">
+                <span class="cyber-symbol">&#x1F513;</span>
+                <span>ENCRYPTION: AES-256</span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="cyber-terminal" id="terminal">
+        <div class="terminal-header">
+            <span class="terminal-title">SYSTEM PROCESS LOG</span>
+            <button class="terminal-toggle" id="terminalToggle">_</button>
+        </div>
+        <div class="terminal-content" id="terminalContent">
+            <div class="terminal-line">> SYSTEM INITIALIZED</div>
+            <div class="terminal-line">> LSTM-CNN MODEL LOADED</div>
+            <div class="terminal-line">> AWAITING USER INPUT</div>
+        </div>
+    </div>
+
+    <script src="\static\script.js"></script>
+
+</body>
+</html>
